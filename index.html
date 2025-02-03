@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Valentine's Day Plan</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #ffe6f2;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+        }
+
+        #content {
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        #message {
+            cursor: pointer;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #ff99cc;
+            color: #660033;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            border: 2px solid #ff3399;
+            box-shadow: 0 0 15px rgba(255, 51, 153, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        .heart {
+            position: fixed;
+            font-size: 1.5rem;
+            animation: float 4-8s linear infinite;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.3;
+            filter: brightness(1.2);
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .action-button {
+            margin-top: 20px;
+            padding: 10px 25px;
+            background: linear-gradient(to right, #ff66b3, #ff3399);
+            border: none;
+            border-radius: 25px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .action-button:hover {
+            transform: scale(1.1);
+            filter: brightness(1.1);
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) translateX(-50%) rotate(0deg);
+                opacity: 0.3;
+            }
+            100% {
+                transform: translateY(-10vh) translateX(calc(-50% + (var(--rand) * 400px - 200px))) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="content">
+        <h1 id="message" onclick="revealSurprise()">Things you could do on Valentine's day if you don't have a date</h1>
+        <button class="action-button" onclick="showStep(1)">Check out list</button>
+    </div>
+
+    <script>
+        // Step configuration
+        const steps = [
+            {
+                text: 'Go on a date with this guy, why do anything else on Valentine\'s day if you could go out with him',
+                button: 'Next'
+            },
+            {
+                text: 'Seriously, why do you want to do anything else',
+                button: 'Next'
+            },
+            {
+                text: 'Now, you\'re convinced to go out with him! Text him and if you don\'t have his number:',
+                button: 'Click here'
+            }
+        ];
+
+        // Step management
+        function showStep(stepIndex) {
+            const contentDiv = document.getElementById('content');
+            const currentStep = steps[stepIndex - 1];
+            
+            contentDiv.innerHTML = `
+                <h2>${currentStep.text}</h2>
+                <button class="action-button" 
+                    onclick="${stepIndex === 3 ? 
+                        'window.location.href=\'https://www.instagram.com/berealprithvi/\'' : 
+                        `showStep(${stepIndex + 1})`}">
+                    ${currentStep.button}
+                </button>
+            `;
+        }
+
+        // Original message reveal
+        function revealSurprise() {
+            document.getElementById('message').innerHTML = 
+                'Go on a date with this guy, why do anything else on Valentine\'s day if you could go out with him';
+        }
+
+        // Heart animation system
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.innerHTML = Math.random() > 0.5 ? '❤️' : '💖';
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.setProperty('--rand', Math.random());
+            heart.style.animationDuration = Math.random() * 3 + 3 + 's';
+            document.body.appendChild(heart);
+
+            heart.addEventListener('animationend', () => {
+                heart.remove();
+            });
+        }
+
+        setInterval(createHeart, 300);
+    </script>
+</body>
+</html>
